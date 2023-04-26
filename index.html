@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Grandmasters: How They Seize Control of the Battlefield</title>
+    <link rel="icon" type="image/x-icon" href="./Logo.png">
+    <style>
+        @font-face {
+            font-family: Edition;
+            src: url('./Font/EDITION.TTF');
+        }    
+
+        @font-face {
+            font-family: Gobold;
+            src: url('./Font/Gobold-Regular.otf');
+        }
+
+        @font-face {
+            font-family: Gobold-Thin-Light;
+            src: url('./Font/Gobold-Thin.otf');
+        }
+
+        @font-face {
+            font-family: Garet-Book;
+            src: url('./Font/Garet-Book.ttf');
+        }
+
+        @font-face {
+            font-family: Zector;
+            src: url('./Font/Zector.otf');
+        }
+
+        @font-face {
+            font-family: Eurostile;
+            src: url('./Font/erosyt.otf');
+        }
+
+        body {
+            margin: 0;
+        }
+
+        h1 {
+            font-family: Edition;
+            font-size: 110pt;
+            font-weight: 100;
+        }
+
+        h2 {
+            font-family: Gobold;
+            font-size: 24pt;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+        }
+
+        h3 {
+            font-family: Gobold-Thin-Light;
+            font-weight: 100;
+            font-size: 20pt;
+        }
+
+        h4 {
+            font-family: Gobold;
+            font-weight: 300;
+            font-size: 16pt;
+        }
+
+        h5 {
+            font-family: Zector;
+            font-weight: 200;
+            font-size: 12pt;
+        }
+
+        p {
+            font-family: Garet-Book;
+            font-size: 12pt;
+        }
+
+        .hideElement {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s 1s, opacity 1s ease-in-out;
+        }
+
+        .button {
+            background-color: white;
+            border-radius: 25px;
+            border: none;
+            color: black;
+            padding: 10px 50px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-family: Garet-Book;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7);
+            transition: all 0.25s ease-in-out;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background-color: rgb(255, 184, 0) !important;
+        }
+
+        .sideAnnotation {
+            height: 100%;
+            position: fixed;
+            width: 0px;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: all 0.5s ease-in-out;
+            padding-top: 60px;
+            box-shadow: -5px 0px 5px rgba(102, 102, 102, 0.7);
+        }
+
+        .navBtn {
+            background-color: white;
+        }
+
+        .navBtn:hover {
+            background-color: rgb(255, 184, 0) !important;
+        }
+
+        .x_icon:hover {
+            color: rgb(255, 184, 0) !important;
+        }
+
+        a:hover p {
+            background-color: rgb(255, 184, 0);
+        }
+
+        .tooltip {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            position: relative;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition-duration: 0.2s;
+            transition-property: opacity, transform;
+        }
+
+        .tooltip::after {
+            position: absolute;
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            top: 90%;
+            left: 50%;
+            transform: rotateZ(45deg) translateX(-50%);
+            z-index: -1;
+        }
+
+        .hide {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .activeData {
+            background-color: rgb(255, 184, 0) !important;
+        }
+
+        #dataType:hover {
+            background-color: rgba(255, 255, 255, 0) !important;
+        }
+
+        .instruction {
+            background-color: rgba(255, 255, 255, 0) !important;
+        }
+
+        .instruction:hover {
+            background-color: rgba(255, 255, 255, 0) !important;
+        }
+
+        #credits {
+            background-color: rgba(255, 255, 255, 0) !important;
+        }
+
+        #credits:hover {
+            background-color: rgba(255, 255, 255, 0) !important;
+        }
+    </style>
+    <script src="./script.js" type="module"></script>
+</head>
+
+<body>
+    <!-- HOME -->
+    <h1 style="position: absolute; left: 215px; top: -75px;" class="hideElement">CHESS GRANDMASTERS</h1>
+    <h2 style="position: absolute; left: 215px; top: 135px;" class="hideElement">HOW THEY SEIZE CONTROL OF THE BATTLEFIELD</h2>
+    <img src="./Logo.png" style="position: absolute; left: 15px; top: 25px; width: 200px;" class="hideElement">
+    <img src="./Profile.png" style="position: absolute; left: 75px; top: 325px; width: 175px;" class="hideElement">
+    <h2 style="position: absolute; left: 265px; top: 315px; color: white; line-height: 45px; font-size: 32pt;" class="hideElement">MAGNUS<br>CARLSEN</h2>
+    <i><h3 style="position: absolute; left: 262.5px; top: 420px;" class="hideElement">WORLD #1</h3></i>
+    <h4 style="position: absolute; left: 265px; top: 470px" class="hideElement">RATING: 2852</h4>
+    <p style="position: absolute; left: 460px; top: 330px; width: 260px; text-align: justify;" class="hideElement">Sven Magnus Øen Carlsen (born 30 November 1990) is a Norwegian chess grandmaster who is the reigning five-time World Chess Champion, four-time World Rapid Chess Champion, and six-time World Blitz Chess Champion. Magnus Carlsen has held the number one position in the FIDE world chess rankings since 1 July 2011. His peak rating of 2882 is the highest in history. He also holds the record for the longest unbeaten streak at the elite level in classical chess.</p>
+    <button class="button hideElement" id="explore" style="position: absolute; left: 460px; top: 725px;" onclick="firstClickFunction();" onmouseenter="resetTransition();"><span style="display:flex; padding: 0 5px;"><img style="height: 25px; margin-right: 5px;" src="./magnifying.png"><b>EXPLORE</b></span></button>
+
+    <!-- CONTROLS -->
+    <button class="navBtn" id="homeButton" style="cursor: pointer; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: -165px; background-color: white; box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;" onclick="returnHome();"><span style="display:flex; padding: 0 10px;"><img style="width: 20px; margin-right: 5px;" src="./home.png">HOME</span></button>
+    <button class="navBtn" id="resetButton" style="cursor: pointer; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: -30px; background-color: white; box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;"><span style="display:flex; padding: 0px 10px;"><img style="width: 20px; margin-right: 5px;" src="./circular.png">RESET CAMERA</span></button>
+
+    <button class="navBtn" id="dataType" style="cursor: default; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: 145px; background-color: rgba(255, 255, 255, 0.0); box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.0); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;"><span style="display:flex; padding: 0px 10px;">DATA: </span></button>
+    <button class="navBtn activeData" id="mix" style="cursor: pointer; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: 250px; box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;" onclick="useDataMix()"><span style="display:flex; padding: 0px 0px;"><img style="width: 20px; margin-right: 0px;" src="./mix.png"></span></button>
+    <button class="navBtn" id="white" style="cursor: pointer; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: 330px; box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;" onclick="useDataWhite()"><span style="display:flex; padding: 0px 0px;"><img style="width: 20px; margin-right: 0px;" src="./white.png"></span></button>
+    <button class="navBtn" id="black" style="cursor: pointer; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; position: absolute; left: 50%; top: 25px; width: auto; margin-left: 410px; box-shadow: 5px 5px 10px rgba(102, 102, 102, 0.7); border-radius: 25px; border: 0; padding: 10px 25px; font-family: Zector; font-size: 12pt; font-weight: 200; visibility: hidden;" onclick="useDataBlack()"><span style="display:flex; padding: 0px 0px;"><img style="width: 20px; margin-right: 0px;" src="./black.png"></span></button>
+    
+    <h5 class="navBtn instruction" style="position: absolute; left: 25px; top: 405px; font-weight: bold; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; visibility: hidden;">CLICKABLE</h5>
+    <h5 class="navBtn instruction" style="position: absolute; left: 25px; top: 425px; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; visibility: hidden;">CHART TITLE -> MORE INFO</h5>
+    <h5 class="navBtn instruction" style="position: absolute; left: 25px; top: 445px; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; visibility: hidden;">HEATMAP CUBE -> CHANGE PIECE ACTIVITY</h5>
+
+    <h5 style="position: absolute; left: 25px; bottom: 65px; font-weight: bold;">CONTROLS</h5>
+    <h5 style="position: absolute; left: 25px; bottom: 45px;">ROTATE - LEFT MOUSE</h5>
+    <h5 style="position: absolute; left: 25px; bottom: 25px;">PAN - RIGHT MOUSE</h5>
+    <h5 style="position: absolute; left: 25px; bottom: 5px;">ZOOM - SCROLL</h5>
+
+    <!-- CREDITS -->
+    <h5 class="navBtn" id="credits" style="position: absolute; left: 25px; top: 5px; font-weight: bold; opacity: 0; transition: visibility 1s 0s, opacity 1s ease-in-out; visibility: hidden; cursor: pointer;" onclick="showCredits()">CREDITS</h5>
+
+    <div id="sideCredits" class="sideAnnotation" style="z-index: 2; width: 450px; left: -450px; box-shadow: 5px 0px 5px rgba(102, 102, 102, 0.7);">
+        <div style="padding: 25px 25px; width: auto; margin-top: -50px;">
+            <div class="x_icon" id="sideCredits_X" style="transition: all 0.25s ease-in-out; display: block; font-size: 32pt; cursor: pointer; text-align: right;" onclick="closeCredits()">&times;</div>
+            <h3 style="display:block; font-family: Eurostile;">CONSTRUCTED USING</h3>
+            <h5 style="margin-left: 25px; font-size: 12pt; margin-top: -15px;">- CORE MODULE</h5>
+            <div style="display: flex; align-items: center; width: 400px; margin-top: -15px;">
+                <img src="./credits0.png" style="width: 190px">
+                <img src="./credits1.png" style="width: 190px; margin-left: 20px;">
+            </div>
+            <h5 style="margin-left: 25px; font-size: 12pt;">- DEVELOPER BEST FRIEND</h5>
+            <div style="display: flex; align-items: center; margin-top: -15px;">
+                <img src="./credits3.png" style="width: 190px;">
+            </div>
+            <h5 style="margin-left: 25px; font-size: 12pt;">- SHOULD HAVE TAKEN VISUAL COMMUNICATION DESIGN MAJOR</h5>
+            <div style="display: flex; align-items: center; margin-top: -15px;">
+                <img src="./credits4.png" style="width: 190px">
+                <img src="./credits5.png" style="width: 190px; margin-left: 20px;">
+            </div>
+            <h5 style="margin-left: 25px; font-size: 12pt;">- DATABASE SOURCE & ANALYZER TOOLS</h5>
+            <div style="display: flex; align-items: center; margin-top: -15px;">
+                <img src="./credits6.png" style="width: 190px">
+            </div>
+
+            <a href="https://sketchfab.com/3d-models/chess-scene-pieces-blender-218776bed6144332ab41417badd5df6b" style="text-decoration: underline; color: black;"><p style="font-size: 12pt; text-align: left; margin-top: 25px;">Chess Pieces Model</p></a>
+            
+            <h3 style="display:block; font-family: Eurostile; margin-top: 50px;">TEAM MEMBERS</h3>
+            <h5 style="margin-left: 25px; font-size: 12pt; margin-top: -15px;">- Mochammad Fatchur Rochman</h5>
+            <h5 style="margin-left: 25px; font-size: 12pt; margin-top: -25px;">- Leonardus Brandon Luwianto</h5>
+            <h5 style="margin-left: 25px; font-size: 12pt; margin-top: -25px;">- Aurelius Marcel Candra</h5>
+            <h5 style="margin-left: 25px; font-size: 12pt; margin-top: -25px;">- Farhan Yusuf Akbar</h5>
+        </div>
+    </div>
+
+    <!-- HELP -->
+    <div id="Piece_Activity" class="sideAnnotation" style="z-index: 2; width: 450px; right: -450px;">
+        <div style="padding: 25px 25px; width: auto;">
+            <div class="x_icon" id="Piece_Activity_X" style="transition: all 0.25s ease-in-out; display: block; font-size: 32pt; cursor: pointer;">&times;</div>
+            <h3 style="display:block; font-family: Eurostile;">PIECE ACTIVITY</h3>
+            <p style="display: block; width: 400px; text-align: justify;">The corresponding chart shows the composition of the pieces which control the observed square. Rather displaying the average value, the percentage values give the actual proportion of each piece placed on the square which counted up from all games provided as data.</p>
+            <img src="./GIF/Piece_Activity.gif" style="width: 400px">
+            <p style="font-size: 8pt; text-align: center;">Illustration is taken from a match between Magnus Carlsen (white) against Fabiano Caruana (black) in Speed Chess Championship 2022.</p>
+        </div>
+    </div>
+
+    <div id="Square_Utilization" class="sideAnnotation" style="z-index: 2; width: 450px; right: -450px;">
+        <div style="padding: 25px 25px; width: auto;">
+            <div class="x_icon" id="Square_Utilization_X" style="transition: all 0.25s ease-in-out; display: block; font-size: 32pt; cursor: pointer;">&times;</div>
+            <h3 style="display:block; font-family: Eurostile;">SQUARE UTILIZATION</h3>
+            <p style="display: block; width: 400px; text-align: justify;">When Magnus Carlsen competes in a game, the battle over the chessboard mostly lasts for 45.5 moves. Whilst the characteristics of the game are quite diverse in terms of strategy and placement of pieces between the white and black sides, the heatmap chart shows the overall piece movement consisting of both sides. As a result, the heatmap has a quite symmetrical shape or more precisely resembles a low slope hill. The D4 square has the most activity with a score of 1.7, which means, either playing as white or black, controlling this square is as important as maintaining safety of the king.</p>
+            <img src="./GIF/Square_Utilization.gif" style="width: 400px">
+            <p style="font-size: 8pt; text-align: center;">Illustration is taken from a match between Magnus Carlsen (white) against Sergey Slugin (black) in Titled Tuesday Blitz October 2022.</p>
+        </div>
+    </div>
+    
+    <div id="Piece_Capture" class="sideAnnotation" style="z-index: 2; width: 450px; right: -450px;">
+        
+        <div style="padding: 25px 25px; width: auto;">
+            <div class="x_icon" id="Piece_Capture_X" style="transition: all 0.25s ease-in-out; display: block; font-size: 32pt; cursor: pointer;">&times;</div>
+            <h3 style="display:block; font-family: Eurostile;">PIECE CAPTURE</h3>
+            <p style="display: block; width: 400px; text-align: justify;">After each game, Magnus Carlsen captures an average of 11.5 pieces from the opposing army. The corresponding bar chart shows the distribution of the average piece capture score within each respective rank on the chessboard. As the bar chart shows, the 4th rank is the bloodiest as 2.7 of opponent’s pieces are taken off the board each game.</p>
+            <img src="./GIF/Piece_Capture.gif" style="width: 400px">
+            <p style="font-size: 8pt; text-align: center;">Illustration is taken from a match between Magnus Carlsen (white) against Vidit Santosh Gujrathi (black) in Meltwater Champions Chess Tour 2022.</p>
+        </div>
+    </div>
+
+    <div id="Rook_Placement" class="sideAnnotation" style="z-index: 2; width: 450px; right: -450px;">
+        <div style="padding: 15px 25px; width: auto;">
+            <div class="x_icon" id="Rook_Placement_X" style="transition: all 0.25s ease-in-out; display: block; font-size: 32pt; cursor: pointer;">&times;</div>
+            <h3 style="display:block; font-family: Eurostile;">ROOK PLACEMENT</h3>
+            <p style="display: block; width: 400px; text-align: justify;">On average, Magnus Carlsen moves his rooks around 8.4 moves per game. The corresponding bar chart shows the distribution of the rook placement mean score within each individual file on the chessboard. The D file is mostly under control with an average score of 2.0.</p>
+            <img src="./GIF/Rook_Placement.gif" style="width: 320px; padding: 0px 40px;">
+            <p style="font-size: 8pt; text-align: center;">Illustration is taken from a match between Magnus Carlsen (white) against Levon Aronian (black) in Botvinnik Memorial 2011.</p>
+            
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        var activeDataType = "mix";
+        var firstClick = false;
+
+        function firstClickFunction() {  
+            if (firstClick != true) {
+                var elements = document.getElementsByClassName("hideElement");
+
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.transitionDelay = "";
+                    elements[i].style.opacity = "0";
+                    elements[i].style.visibility = "hidden";
+
+                }
+
+                var navElements = document.getElementsByClassName("navBtn");
+
+                for (var i = 0; i < navElements.length; i++) {
+                    navElements[i].style.transitionDelay = "3s";
+                    navElements[i].style.opacity = "1";
+                    navElements[i].style.visibility = "visible";
+                }
+
+                firstClick = true;
+            }
+        }
+
+        function returnHome() {
+            var elements = document.getElementsByClassName("hideElement");
+
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.transitionDelay = "3s";
+                elements[i].style.opacity = "1";
+                elements[i].style.visibility = "visible";
+            }
+
+            const instruction = document.getElementsByClassName("navBtn");
+            for (var i = 0; i < instruction.length; i++) {
+                    instruction[i].style.transitionDelay = "";
+                    instruction[i].style.opacity = "0";
+                    instruction[i].style.visibility = "hidden";
+                }
+
+            firstClick = false;
+        }
+        
+        function resetTransition() {
+            document.getElementById("explore").style.transitionDelay = "";
+        }
+
+        function showCredits() {
+            document.getElementById("sideCredits").style.left = "0";
+        }
+
+        function closeCredits() {
+            document.getElementById("sideCredits").style.left = "-450px";
+        }
+
+        function useDataMix() {
+            if (activeDataType != "mix") {
+                document.getElementById(activeDataType).classList.remove("activeData");
+
+                document.getElementById("mix").classList.add("activeData");
+
+                activeDataType = "mix";
+            }
+        }
+
+        function useDataWhite() {
+            if (activeDataType != "white") {
+                document.getElementById(activeDataType).classList.remove("activeData");
+
+                document.getElementById("white").classList.add("activeData");
+
+                activeDataType = "white";
+            }
+        }
+
+        function useDataBlack() {
+            if (activeDataType != "black") {
+                document.getElementById(activeDataType).classList.remove("activeData");
+
+                document.getElementById("black").classList.add("activeData");
+
+                activeDataType = "black";
+            }
+        }
+    </script>
+</body>
+
+</html>
