@@ -345,18 +345,21 @@ for (var i = 0; i < 8; i++) {
         cubeContainer[i][j][1].position.y = (2 * valueContainer[activeDataTypeNum][i][j] - cubeContainer[i][j][1].geometry.parameters.geometry.parameters.height * valueContainer[activeDataTypeNum][i][j]) / 2;
         cubeContainer[i][j][1].scale.y = valueContainer[activeDataTypeNum][i][j];
 
-        if (valueContainer[activeDataTypeNum][i][j] > 0.5 && valueContainer[activeDataTypeNum][i][j] <= 0.8) {
+        if (valueContainer[activeDataTypeNum][i][j] >= 0.4 && valueContainer[activeDataTypeNum][i][j] < 0.8) {
             cubeContainer[i][j][0].material.color.set(0xa0a0a0);
             cubeContainer[i][j][0].userData.color = 0.6275;
-        } else if (valueContainer[activeDataTypeNum][i][j] > 0.8 && valueContainer[activeDataTypeNum][i][j] <= 1.1) {
+        } else if (valueContainer[activeDataTypeNum][i][j] >= 0.8 && valueContainer[activeDataTypeNum][i][j] < 1.2) {
             cubeContainer[i][j][0].material.color.set(0x666666);
             cubeContainer[i][j][0].userData.color = 0.4;
-        } else if (valueContainer[activeDataTypeNum][i][j] > 1.1 && valueContainer[activeDataTypeNum][i][j] <= 1.4) {
+        } else if (valueContainer[activeDataTypeNum][i][j] >= 1.2 && valueContainer[activeDataTypeNum][i][j] < 1.6) {
             cubeContainer[i][j][0].material.color.set(0x333333);
             cubeContainer[i][j][0].userData.color = 0.2;
-        } else if (valueContainer[activeDataTypeNum][i][j] > 1.4 && valueContainer[activeDataTypeNum][i][j] <= 1.7) {
+        } else if (valueContainer[activeDataTypeNum][i][j] >= 1.6 && valueContainer[activeDataTypeNum][i][j] < 2) {
             cubeContainer[i][j][0].material.color.set(0x1a1a1a);
             cubeContainer[i][j][0].userData.color = 0.102;
+        } else if (valueContainer[activeDataTypeNum][i][j] >= 2) {
+            cubeContainer[i][j][0].material.color.set(0x000000);
+            cubeContainer[i][j][0].userData.color = 0;
         }
         
         cubeContainer[i][j][0].scale.y = valueContainer[activeDataTypeNum][i][j];
@@ -373,59 +376,42 @@ planeSquareUtilization.name = "Annotation";
 planeSquareUtilization.userData = {Annotation_type: "Square_Utilization"};
 scene.add(planeSquareUtilization);
 
-var heatMapLegend = new Array(6);
+var heatMapLegend = new Array(7);
 
-for (var i = 0; i < 6; i++) {
+for (var i = 0; i < 7; i++) {
     heatMapLegend[i] = new Array(3);
 }
 
-for (var i = 0; i < 6; i++) {
+for (var i = 0; i < 7; i++) {
     heatMapLegend[i][0] = new THREE.Mesh(cube, new THREE.MeshStandardMaterial({color: 0xFFFFFF, flatShading: true, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}));
     heatMapLegend[i][0].castShadow = true;
     heatMapLegend[i][0].receiveShadow = true;
-    heatMapLegend[i][0].position.set(6.5, 0.5, 2 - i);
-    // compositionContainer[i][0].userData = {internalValue: 0, pieceType: ""};
-    // compositionContainer[i][0].name = "Piece_Act";
+    heatMapLegend[i][0].position.set(6.5, 0.5, 2.5 - i);
     heatMapLegend[i][0].userData = {color5: "", color6: ""};
     scene.add(heatMapLegend[i][0]);
 
     heatMapLegend[i][1] = new THREE.LineSegments(edge, new THREE.LineBasicMaterial({color: 0x000000}));
-    heatMapLegend[i][1].position.set(6.5, 0.5, 2 - i);
-    // heatMapLegend[i][1].scale.z = 0.5;
+    heatMapLegend[i][1].position.set(6.5, 0.5, 2.5 - i);
 
     scene.add(heatMapLegend[i][1])
 
-    if (i == 5) {
-        heatMapLegend[i][0].position.y = - 1;
-        heatMapLegend[i][1].position.y = - 1;
+    if (i == 6) {
+        scene.remove(heatMapLegend[i][0]);
+        scene.remove(heatMapLegend[i][1]);
     }
 
-    var textureFileRulerRightNumber; 
-
-    if (i == 0) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM02.png');
-    } else if (i == 1) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM05.png');
-    } else if (i == 2) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM08.png');
-    } else if (i == 3) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM11.png');
-    } else if (i == 4) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM14.png');
-    } else if (i == 5) {
-        textureFileRulerRightNumber = new THREE.TextureLoader().load('HM17.png');
-    }
-
+    var textureFileRulerRightNumber = new THREE.TextureLoader().load('LeftRuler' + i.toString() + '.png');
     var materialFileRulerRightNumber = new THREE.MeshLambertMaterial({map: textureFileRulerRightNumber, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1, transparent: true});
 
     heatMapLegend[i][2] = new THREE.Mesh(planeGeometry, materialFileRulerRightNumber);
-    heatMapLegend[i][2].position.set(7.5, 0.001, 2.5 - i);
+    heatMapLegend[i][2].position.set(7.5, 0.001, 3 - i);
     heatMapLegend[i][2].rotateX(- Math.PI / 2);
     heatMapLegend[i][2].rotateZ(Math.PI / 2);
+    heatMapLegend[i][2].scale.set(0.75, 0.75, 1);
     scene.add(heatMapLegend[i][2]);
 }
 
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 6; i++) {
     heatMapLegend[i][0].scale.y = 0.2 + i * 0.3;
     heatMapLegend[i][0].position.y = (2 * heatMapLegend[i][0].scale.y - heatMapLegend[i][0].geometry.parameters.height * heatMapLegend[i][0].scale.y) / 2;
     
@@ -438,8 +424,9 @@ heatMapLegend[1][0].userData.color5 = 0xa0a0a0;
 heatMapLegend[2][0].userData.color5 = 0x666666;
 heatMapLegend[3][0].userData.color5 = 0x333333;
 heatMapLegend[4][0].userData.color5 = 0x1A1A1A;
+heatMapLegend[5][0].userData.color5 = 0x000000;
 
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 6; i++) {
     heatMapLegend[i][0].material.color.set(heatMapLegend[i][0].userData.color5);
 }
 
@@ -450,8 +437,8 @@ for (var i = 0; i < 5; i++) {
 var barLeftContainerValue = 
     [
         [0.6, 0.6, 1.7, 2.7, 2.6, 2.0, 0.7, 0.6],
-        [0.6, 1.7, 2.7, 2.6, 2.0, 0.7, 0.6, 0.6],
-        [1.7, 2.7, 2.6, 2.0, 0.7, 0.6, 0.6, 0.6]
+        [0.1, 0.2, 0.7, 1.6, 3.0, 2.9, 1.0, 1.3],
+        [1.6, 1.3, 3.1, 2.9, 2.2, 1.0, 0.1, 0.1]
     ];
 var barLeftContainerValueMax = barLeftContainerValue[activeDataTypeNum].reduce((a, b) => Math.max(a, b), -Infinity);
 var barLeftContainer = new Array(8);
@@ -569,8 +556,8 @@ scene.add(planePieceCapture);
 var barRightContainerValue = 
     [
         [0.3, 0.6, 1.4, 2.0, 1.7, 1.5, 0.8, 0.2],
-        [0.6, 1.4, 2.0, 1.7, 1.5, 0.8, 0.2, 0.3],
-        [1.4, 2.0, 1.7, 1.5, 0.8, 0.2, 0.3, 0.6]
+        [0.2, 0.5, 1.4, 2.1, 1.7, 1.5, 0.8, 0.3],
+        [0.3, 0.7, 1.4, 1.9, 1.6, 1.4, 0.8, 0.2]
     ];
 var barRightContainerValueMax = barRightContainerValue[activeDataTypeNum].reduce((a, b) => Math.max(a, b), -Infinity);
 var barRightContainer = new Array(8);
@@ -680,72 +667,227 @@ scene.add(planeRookPlacement);
 // Piece Activity
 // 
 
-var compositionDictionary = {
-    "A1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "A8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "B8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "C8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "D8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E4": [21.2, 17.8, 12.7, 9.4, 7.2, 31.7],
-    "E5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "E8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "F8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "G8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H1": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H2": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H3": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H4": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H5": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H6": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H7": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2],
-    "H8": [31.7, 21.2, 17.8, 12.7, 9.4, 7.2]
-}
+var compositionDictionary = [
+    {
+    "A1": [0.1, 1.2, 22.0, 48.0, 8.4, 20.3],
+    "A2": [0.4, 3.1, 30.2, 41.4, 10.0, 14.9],
+    "A3": [4.5, 7.2, 36.1, 29.0, 18.6, 4.5],
+    "A4": [9.1, 10.1, 33.1, 24.3, 20.4, 3.0],
+    "A5": [11.2, 12.3, 35.6, 18.7, 18.9, 3.4],
+    "A6": [5.9, 9.8, 31.3, 28.1, 22.3, 2.6],
+    "A7": [0.6, 2.8, 35.1, 40.1, 13.0, 8.3],
+    "A8": [0.4, 1.2, 23.7, 39.7, 11.3, 23.7],
+
+    "B1": [0.4, 3.1, 27.4, 31.2, 8.5, 29.3],
+    "B2": [1.8, 7.2, 36.3, 34.2, 13.1, 7.5],
+    "B3": [10.2, 16.7, 31.0, 18.1, 17.4, 6.5],
+    "B4": [15.4, 17.8, 35.7, 11.7, 16.8, 2.4],
+    "B5": [19.0, 23.4, 29.8, 9.5, 15.7, 2.5],
+    "B6": [7.9, 17.1, 28.5, 23.8, 16.5, 6.1],
+    "B7": [2.6, 10.9, 38.4, 23.3, 13.5, 11.3],
+    "B8": [0.7, 3.4, 26.4, 29.9, 9.2, 30.4],
+
+    "C1": [1.3, 6.1, 21.2, 44.7, 16.2, 10.6],
+    "C2": [1.9, 12.8, 30.9, 31.9, 15.9, 6.6],
+    "C3": [15.6, 30.8, 19.8, 9.9, 21.1, 2.8],
+    "C4": [29.9, 34.7, 9.5, 6.7, 17.4, 1.8],
+    "C5": [24.7, 27.4, 18.8, 8.5, 20.0, 0.6],
+    "C6": [13.7, 27.6, 19.8, 14.5, 21.3, 3.0],
+    "C7": [2.1, 15.0, 27.0, 32.3, 12.0, 11.5],
+    "C8": [1.6, 8.7, 19.1, 43.4, 14.2, 13.0],
+
+    "D1": [2.3, 8.3, 24.4, 34.9, 18.2, 11.9],
+    "D2": [4.3, 19.9, 26.3, 25.1, 18.5, 5.9],
+    "D3": [11.8, 19.3, 26.3, 19.7, 21.2, 1.8],
+    "D4": [35.2, 25.3, 9.2, 4.4, 25.3, 0.6],
+    "D5": [34.1, 25.3, 7.2, 8.1, 24.7, 0.7],
+    "D6": [12.4, 20.4, 23.6, 19.2, 21.9, 2.5],
+    "D7": [5.1, 20.0, 27.6, 22.2, 22.4, 2.7],
+    "D8": [1.4, 6.3, 20.5, 42.4, 16.5, 12.9],
+
+    "E1": [1.2, 6.1, 18.1, 43.7, 12.8, 18.1],
+    "E2": [3.8, 18.0, 25.6, 27.9, 17.4, 7.3],
+    "E3": [15.3, 25.3, 17.6, 18.8, 19.4, 3.6],
+    "E4": [27.1, 21.7, 14.0, 11.7, 24.9, 0.5],
+    "E5": [33.0, 24.7, 11.5, 7.4, 23.0, 0.2],
+    "E6": [14.3, 23.6, 19.2, 19.4, 21.8, 1.7],
+    "E7": [4.5, 17.1, 23.0, 28.0, 21.2, 6.2],
+    "E8": [1.2, 5.4, 18.7, 46.0, 15.3, 13.4],
+
+    "F1": [0.5, 9.4, 19.4, 38.5, 18.6, 13.5],
+    "F2": [0.4, 12.2, 25.5, 35.1, 11.4, 15.4],
+    "F3": [7.6, 44.7, 11.4, 9.7, 24.4, 2.2],
+    "F4": [8.3, 32.4, 22.5, 13.7, 19.5, 3.6],
+    "F5": [6.9, 30.5, 26.8, 13.8, 20.0, 1.9],
+    "F6": [7.8, 39.6, 11.8, 11.0, 29.0, 0.8],
+    "F7": [0.4, 11.6, 27.1, 32.4, 12.3, 16.3],
+    "F8": [0.7, 11.0, 15.8, 43.7, 19.4, 9.4],
+
+    "G1": [1.3, 6.1, 24.1, 34.2, 14.0, 20.3],
+    "G2": [1.7, 10.2, 36.3, 26.9, 13.0, 11.8],
+    "G3": [7.0, 20.2, 32.6, 18.0, 14.1, 8.0],
+    "G4": [13.1, 19.9, 36.3, 10.1, 13.6, 6.9],
+    "G5": [14.7, 21.1, 28.2, 14.1, 15.0, 7.0],
+    "G6": [6.9, 16.3, 32.2, 18.1, 16.5, 10.0],
+    "G7": [1.5, 10.9, 36.9, 20.8, 12.1, 17.7],
+    "G8": [1.1, 5.5, 20.8, 35.4, 14.1, 23.0],
+
+    "H1": [0.5, 1.2, 21.9, 20.9, 5.5, 50.0],
+    "H2": [1.2, 2.9, 34.0, 24.8, 8.9, 28.2],
+    "H3": [7.4, 9.4, 46.4, 14.4, 11.9, 10.4],
+    "H4": [12.8, 10.5, 44.7, 12.5, 13.1, 6.5],
+    "H5": [8.8, 8.3, 43.8, 17.4, 14.0, 7.6],
+    "H6": [8.3, 9.7, 45.8, 14.5, 12.6, 9.1],
+    "H7": [0.7, 3.1, 36.8, 24.8, 8.0, 26.8],
+    "H8": [0.2, 1.2, 17.9, 23.3, 3.9, 53.5]
+    },
+    {
+    "A1": [0.0, 1.4, 28.1, 43.2, 5.9, 21.4],
+    "A2": [0.0, 2.1, 38.2, 42.3, 6.9, 10.5],
+    "A3": [3.7, 7.1, 35.3, 35.1, 15.0, 3.8],
+    "A4": [9.8, 11.9, 36.0, 24.2, 16.4, 1.8],
+    "A5": [4.3, 8.1, 47.5, 24.5, 10.5, 5.0],
+    "A6": [2.2, 4.9, 47.9, 31.3, 10.1, 3.6],
+    "A7": [2.1, 3.5, 39.3, 43.6, 7.0, 4.5],
+    "A8": [0.4, 0.7, 21.9, 62.2, 9.9, 5.0],
+
+    "B1": [0.0, 4.3, 29.8, 44.5, 8.5, 12.9],
+    "B2": [0.0, 7.8, 39.8, 29.1, 6.6, 16.7],
+    "B3": [10.1, 20.2, 24.6, 25.6, 16.0, 3.4],
+    "B4": [12.1, 14.8, 35.3, 22.5, 12.3, 2.9],
+    "B5": [12.9, 16.5, 43.0, 11.2, 13.3, 3.1],
+    "B6": [5.5, 8.4, 54.8, 20.0, 8.8, 2.6],
+    "B7": [2.1, 5.0, 32.5, 49.0, 7.0, 4.4],
+    "B8": [0.2, 1.0, 28.5, 53.0, 9.6, 7.6],
+
+    "C1": [0.0, 16.7, 22.9, 34.3, 11.4, 14.8],
+    "C2": [0.0, 18.0, 23.7, 39.7, 12.3, 6.3],
+    "C3": [20.1, 38.5, 10.5, 7.6, 22.5, 0.9],
+    "C4": [28.9, 36.3, 10.7, 5.1, 17.5, 1.5],
+    "C5": [9.5, 21.2, 41.3, 13.3, 11.2, 3.6],
+    "C6": [6.9, 17.5, 42.1, 19.6, 10.0, 3.9],
+    "C7": [2.3, 6.9, 29.3, 50.5, 7.3, 3.8],
+    "C8": [0.9, 2.5, 27.6, 48.0, 9.2, 11.8],
+
+    "D1": [0.0, 17.5, 21.3, 36.8, 17.8, 6.6],
+    "D2": [0.0, 27.4, 13.9, 33.2, 22.5, 2.9],
+    "D3": [19.9, 31.3, 14.7, 13.9, 18.5, 1.7],
+    "D4": [38.1, 27.4, 4.4, 2.6, 27.4, 0.2],
+    "D5": [22.7, 24.2, 19.5, 13.0, 19.4, 1.2],
+    "D6": [9.2, 17.3, 35.9, 24.8, 10.6, 2.2],
+    "D7": [4.6, 5.6, 28.0, 50.4, 10.3, 1.3],
+    "D8": [1.5, 1.8, 21.0, 59.2, 14.0, 2.4],
+
+    "E1": [0.0, 10.3, 17.9, 51.0, 12.9, 7.9],
+    "E2": [0.0, 22.3, 24.7, 28.5, 22.0, 2.5],
+    "E3": [18.1, 26.8, 17.2, 13.6, 22.7, 1.5],
+    "E4": [32.8, 27.3, 9.9, 6.7, 22.5, 0.8],
+    "E5": [24.8, 29.4, 17.3, 10.3, 16.6, 1.6],
+    "E6": [7.7, 11.2, 41.7, 25.7, 12.1, 1.7],
+    "E7": [3.9, 5.7, 26.9, 51.9, 7.7, 3.8],
+    "E8": [0.6, 1.7, 25.4, 57.4, 11.0, 3.9],
+
+    "F1": [0.0, 22.0, 19.1, 31.7, 23.4, 3.7],
+    "F2": [0.0, 19.5, 28.6, 26.7, 10.3, 14.9],
+    "F3": [9.3, 45.4, 5.4, 3.8, 35.7, 0.4],
+    "F4": [7.1, 32.5, 21.9, 17.8, 17.7, 3.0],
+    "F5": [4.6, 26.4, 38.2, 14.4, 12.5, 3.9],
+    "F6": [2.9, 18.4, 44.7, 18.4, 10.8, 4.8],
+    "F7": [1.0, 5.2, 32.7, 49.3, 9.8, 2.0],
+    "F8": [0.2, 1.4, 20.3, 62.5, 10.8, 4.9],
+
+    "G1": [0.0, 13.5, 25.0, 34.1, 13.7 ,13.7],
+    "G2": [0.0, 11.2, 32.7, 36.4, 12.5, 7.1],
+    "G3": [9.2, 23.3, 31.4, 16.1, 15.6, 4.4],
+    "G4": [11.9, 19.1, 29.1, 22.2, 11.8, 6.0],
+    "G5": [9.6, 18.5, 44.1, 12.5, 11.7, 3.6],
+    "G6": [4.3, 9.2, 49.5, 19.5, 11.7, 10.5],
+    "G7": [1.2, 3.3, 42.2, 42.3, 7.3, 3.7],
+    "G8": [0.4, 0.7, 27.9, 46.5, 8.2, 16.3],
+
+    "H1": [0.0, 1.9, 26.1, 35.6, 4.7, 31.7],
+    "H2": [0.0, 4.7, 41.5, 25.4, 6.1, 22.3],
+    "H3": [8.9, 13.9, 39.0, 19.2, 9.9, 9.0],
+    "H4": [13.1, 11.0, 45.5, 14.9, 11.4, 4.2],
+    "H5": [5.5, 7.5, 54.6, 18.1, 7.9, 6.4],
+    "H6": [5.1, 5.0, 54.5, 21.2, 7.1, 7.1],
+    "H7": [1.3, 2.6, 44.5, 39.9, 5.0, 6.7],
+    "H8": [0.7, 0.6, 26.3, 52.9, 7.4, 12.0]
+    },
+    {
+    "A1": [0.3, 0.6, 22.9, 65.4, 9.0, 1.8],
+    "A2": [1.4, 1.7, 32.9, 54.0, 8.4, 1.5],
+    "A3": [2.2, 3.9, 47.3, 35.3, 7.9, 3.3],
+    "A4": [4.0, 7.7, 47.8, 29.0, 8.9, 2.6],
+    "A5": [11.8, 12.9, 26.2, 31.0, 14.4, 3.7],
+    "A6": [6.6, 12.4, 26.9, 32.5, 19.3, 2.3],
+    "A7": [0.0, 3.6, 38.6, 33.4, 6.0, 18.4],
+    "A8": [0.0, 2.0, 34.2, 49.1, 8.0, 6.7],
+
+    "B1": [0.5, 0.9, 24.0, 62.0, 7.5, 5.1],
+    "B2": [1.1, 2.1, 39.6, 45.7, 9.0, 2.6],
+    "B3": [4.6, 6.6, 52.5, 24.2, 8.3, 3.8],
+    "B4": [12.6, 19.0, 37.4, 17.5, 10.9, 2.6],
+    "B5": [13.1, 17.6, 34.2, 20.9, 11.4, 2.8],
+    "B6": [9.7, 20.8, 31.6, 17.5, 15.2, 5.2],
+    "B7": [0.0, 12.4, 39.9, 28.0, 11.2, 8.4],
+    "B8": [0.0, 4.8, 33.5, 39.4, 8.7, 13.6],
+
+    "C1": [0.7, 2.5, 20.8, 61.8, 7.2, 7.0],
+    "C2": [3.2, 4.5, 38.2, 42.8, 8.5, 2.7],
+    "C3": [11.6, 21.8, 36.6, 18.2, 8.4, 3.4],
+    "C4": [14.0, 26.7, 34.9, 11.5, 9.7, 3.2],
+    "C5": [28.6, 32.9, 12.9, 8.0, 16.6, 0.9],
+    "C6": [21.5, 39.1, 9.5, 7.3, 21.3, 1.4],
+    "C7": [0.0, 17.3, 32.5, 29.8, 9.9, 10.4],
+    "C8": [0.0, 19.0, 24.0, 29.0, 14.0, 14.1],
+    
+    "D1": [1.3, 1.6, 22.7, 61.8, 10.8, 1.8],
+    "D2": [2.2, 3.1, 37.6, 45.3, 10.4, 1.5],
+    "D3": [5.4, 10.6, 46.9, 25.7, 8.8, 2.6],
+    "D4": [24.1, 28.9, 22.4, 10.1, 13.4, 1.1],
+    "D5": [35.8, 28.7, 5.4, 8.8, 20.3, 1.0],
+    "D6": [15.0, 23.0, 17.6, 22.6, 20.5, 1.3],
+    "D7": [0.0, 28.0, 17.1, 25.1, 27.8, 2.1],
+    "D8": [0.0, 10.9, 24.8, 41.3, 17.2, 5.8],
+    
+    "E1": [1.2, 1.9, 24.3, 59.9, 8.0, 4.7],
+    "E2": [1.5, 2.9, 30.7, 53.9, 7.6, 3.4],
+    "E3": [5.6, 12.1, 45.6, 25.6, 6.5, 4.6],
+    "E4": [19.7, 23.6, 25.8, 15.7, 13.4, 1.8],
+    "E5": [31.7, 28.1, 14.0, 7.9, 17.3, 1.0],
+    "E6": [21.1, 32.1, 8.4, 15.4, 21.3, 1.7],
+    "E7": [0.0, 31.2, 18.3, 20.9, 27.7, 2.0],
+    "E8": [0.0, 10.9, 22.0, 46.2, 14.6, 6.3],
+    
+    "F1": [0.2, 1.5, 22.4, 61.0, 8.1, 6.8],
+    "F2": [0.6, 3.8, 43.7, 38.8, 6.9, 6.3],
+    "F3": [2.4, 17.3, 44.3, 22.5, 6.6, 6.9],
+    "F4": [2.8, 17.9, 48.3, 17.5, 9.7, 3.8],
+    "F5": [8.8, 38.5, 18.3, 15.6, 14.4, 4.4],
+    "F6": [9.2, 43.7, 1.7, 9.3, 35.4, 0.7],
+    "F7": [0.0, 19.7, 33.9, 28.3, 10.0, 8.1],
+    "F8": [0.0, 22.6, 20.6, 24.5, 27.2, 5.1],
+    
+    "G1": [0.9, 1.0, 30.9, 40.1, 5.6, 21.5],
+    "G2": [2.3, 2.8, 47.8, 31.6, 6.0, 9.6],
+    "G3": [3.3, 7.8, 50.0, 22.2, 4.5, 12.2],
+    "G4": [5.5, 14.8, 46.2, 19.0, 7.8, 6.8],
+    "G5": [8.9, 18.9, 34.4, 18.7, 7.7, 11.3],
+    "G6": [10.0, 25.5, 26.4, 18.9, 15.3, 3.9],
+    "G7": [0.0, 14.9, 35.7, 29.2, 13.8, 6.3],
+    "G8": [0.0, 14.5, 24.9, 29.8, 17.2, 13.5],
+    
+    "H1": [0.7, 0.5, 28.0, 48.9, 6.6, 15.3],
+    "H2": [2.0, 1.2, 40.0, 47.1, 5.9, 3.8],
+    "H3": [1.4, 3.4, 52.5, 24.5, 4.5, 13.6],
+    "H4": [3.3, 6.5, 57.9, 18.2, 5.4, 8.6],
+    "H5": [8.7, 10.7, 43.1, 18.8, 7.2, 11.5],
+    "H6": [6.5, 10.4, 38.1, 24.0, 10.5, 10.4],
+    "H7": [0.0, 4.9, 39.8, 21.9, 4.9, 28.5],
+    "H8": [0.0, 1.7, 33.4, 39.4, 5.5, 20.1]
+    }
+];
 
 var sample = [{"A4": [1, 2]}, {"B4": [1, 2]}, {"C4": [1, 2]}];
 
@@ -1073,7 +1215,7 @@ function changeCursor(event) {
                         var pos = intersects[i].object.position;
                         divContainer.position.set(pos.x, pos.y, pos.z);
                         divContainer.position.y = intersects[i].object.geometry.parameters.height * intersects[i].object.scale.y + 0.75;
-                        p.textContent = intersects[i].object.userData.pieceType + ": " + intersects[i].object.userData.internalValue.toString();
+                        p.textContent = intersects[i].object.userData.pieceType + ": " + intersects[i].object.userData.internalValue.toString() + "%";
                     }
                     break;
                 } else {
@@ -1130,6 +1272,7 @@ function changeData() {
 
         // RESCALE BAR
         for (var i = 0; i < 8; i++) {
+            barLeftContainer[i][0].userData.internalValue = barLeftContainerValue[activeDataTypeNum][i];
             var currentPosY = barLeftContainer[i][0].geometry.parameters.height * barLeftContainer[i][0].scale.y / 2;
             var currentScaleY = barLeftContainer[i][0].scale.y;
             var newPosY = (2 * barLeftContainerValue[activeDataTypeNum][i] - barLeftContainer[i][0].geometry.parameters.height * barLeftContainerValue[activeDataTypeNum][i]) / 2 * 2.5;
@@ -1191,9 +1334,12 @@ function changeData() {
 
         for (var index = 0; index < 8; index++) {
             barLeftContainer[index][0].userData.internalValue = barLeftContainerValue[activeDataTypeNum][index];
+        }
 
-            if (barLeftContainer[index][0].userData.internalValue == barLeftContainerValueMax) {
-                var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {barLeftContainer[index][0].material.color.r = coords.r; barLeftContainer[index][0].material.color.g = coords.g; barLeftContainer[index][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut).delay(1000);
+        for (var index_ = 0; index_ < 8; index_++) {
+            // alert(index);
+            if (barLeftContainer[index_][0].userData.internalValue == barLeftContainerValueMax) {
+                var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {barLeftContainer[index_][0].material.color.r = coords.r; barLeftContainer[index_][0].material.color.g = coords.g; barLeftContainer[index_][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut).delay(1000);
                 tween.start();
                 break;
             }
@@ -1205,6 +1351,7 @@ function changeData() {
 
         // RESCALE BAR
         for (var i = 0; i < 8; i++) {
+            barRightContainer[i][0].userData.internalValue = barRightContainerValue[activeDataTypeNum][i];
             var currentPosY = barRightContainer[i][0].geometry.parameters.height * barRightContainer[i][0].scale.y / 2;
             var currentScaleY = barRightContainer[i][0].scale.y;
             var newPosY = (2 * barRightContainerValue[activeDataTypeNum][i] - barRightContainer[i][0].geometry.parameters.height * barRightContainerValue[activeDataTypeNum][i]) / 2 * 3.325;
@@ -1266,9 +1413,11 @@ function changeData() {
 
         for (var index = 0; index < 8; index++) {
             barRightContainer[index][0].userData.internalValue = barRightContainerValue[activeDataTypeNum][index];
+        }
 
-            if (barRightContainer[index][0].userData.internalValue == barRightContainerValueMax) {
-                var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {barRightContainer[index][0].material.color.r = coords.r; barRightContainer[index][0].material.color.g = coords.g; barRightContainer[index][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut).delay(1000);
+        for (var index_1 = 0; index_1 < 8; index_1++) {
+            if (barRightContainer[index_1][0].userData.internalValue == barRightContainerValueMax) {
+                var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {barRightContainer[index_1][0].material.color.r = coords.r; barRightContainer[index_1][0].material.color.g = coords.g; barRightContainer[index_1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut).delay(1000);
                 tween.start();
                 break;
             }
@@ -1282,30 +1431,27 @@ function changeData() {
             for (var j = 0; j < 8; j++) {
                 cubeContainer[i][j][0].userData.internalValue = valueContainer[activeDataTypeNum][i][j];
                 
-                // if (valueContainer[activeDataTypeNum][i][j] <= 0.5) {
-                //     cubeContainer[i][j][0].material.color.set(0xFFFFFF);
-                //     cubeContainer[i][j][0].userData.color = 0xFFFFFF;
-                // } else if (valueContainer[activeDataTypeNum][i][j] > 0.5 && valueContainer[activeDataTypeNum][i][j] <= 0.8) {
-                //     cubeContainer[i][j][0].material.color.set(0xa0a0a0);
-                //     cubeContainer[i][j][0].userData.color = 0xa0a0a0;
-                // } else if (valueContainer[activeDataTypeNum][i][j] > 0.8 && valueContainer[activeDataTypeNum][i][j] <= 1.1) {
-                //     cubeContainer[i][j][0].material.color.set(0x666666);
-                //     cubeContainer[i][j][0].userData.color = 0x666666;
-                // } else if (valueContainer[activeDataTypeNum][i][j] > 1.1 && valueContainer[activeDataTypeNum][i][j] <= 1.4) {
-                //     cubeContainer[i][j][0].material.color.set(0x333333);
-                //     cubeContainer[i][j][0].userData.color = 0x333333;
-                // } else if (valueContainer[activeDataTypeNum][i][j] > 1.4 && valueContainer[activeDataTypeNum][i][j] <= 1.7) {
-                //     cubeContainer[i][j][0].material.color.set(0x1a1a1a);
-                //     cubeContainer[i][j][0].userData.color = 0x1a1a1a;
-                // } else if (valueContainer[activeDataTypeNum][i][j] > 1.7) {
-                //     cubeContainer[i][j][0].material.color.set(0x000000);
-                //     cubeContainer[i][j][0].userData.color = 0x000000;
-                // }
+                if (cubeContainer[i][j][0].userData.internalValue < 0.4) {
+                    cubeContainer[i][j][0].userData.colorChange = 1;
+                } else if (cubeContainer[i][j][0].userData.internalValue >= 0.4 && cubeContainer[i][j][0].userData.internalValue < 0.8) {
+                    cubeContainer[i][j][0].userData.colorChange = 0.6275;
+                } else if (cubeContainer[i][j][0].userData.internalValue >= 0.8 && cubeContainer[i][j][0].userData.internalValue < 1.2) {
+                    cubeContainer[i][j][0].userData.colorChange = 0.4;
+                } else if (cubeContainer[i][j][0].userData.internalValue >= 1.2 && cubeContainer[i][j][0].userData.internalValue < 1.6) {
+                    cubeContainer[i][j][0].userData.colorChange = 0.2;
+                } else if (cubeContainer[i][j][0].userData.internalValue >= 1.6 && cubeContainer[i][j][0].userData.internalValue < 2) {
+                    cubeContainer[i][j][0].userData.colorChange = 0.102;
+                } else if (cubeContainer[i][j][0].userData.internalValue > 2) {
+                    cubeContainer[i][j][0].userData.colorChange = 0;
+                }
 
                 var currentPosY = cubeContainer[i][j][0].geometry.parameters.height * cubeContainer[i][j][0].scale.y / 2;
                 var currentScaleY = cubeContainer[i][j][0].scale.y;
                 var newPosY = (2 * valueContainer[activeDataTypeNum][i][j] - cubeContainer[i][j][0].geometry.parameters.height * valueContainer[activeDataTypeNum][i][j]) / 2;
                 var newScaleY = valueContainer[activeDataTypeNum][i][j];
+
+                var currentColor = cubeContainer[i][j][0].userData.color;
+                var nextColor = cubeContainer[i][j][0].userData.colorChange;
 
                 if (i == 0 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][0][0].position.y = coords.y; cubeContainer[0][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
@@ -1313,386 +1459,579 @@ function changeData() {
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][0][1].position.y = coords.y; cubeContainer[0][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][0][0].material.color.r = coords.r; cubeContainer[0][0][0].material.color.g = coords.g; cubeContainer[0][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][1][0].position.y = coords.y; cubeContainer[0][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][1][1].position.y = coords.y; cubeContainer[0][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][1][0].material.color.r = coords.r; cubeContainer[0][1][0].material.color.g = coords.g; cubeContainer[0][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][2][0].position.y = coords.y; cubeContainer[0][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][2][1].position.y = coords.y; cubeContainer[0][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][2][0].material.color.r = coords.r; cubeContainer[0][2][0].material.color.g = coords.g; cubeContainer[0][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][3][0].position.y = coords.y; cubeContainer[0][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][3][1].position.y = coords.y; cubeContainer[0][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][3][0].material.color.r = coords.r; cubeContainer[0][3][0].material.color.g = coords.g; cubeContainer[0][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][4][0].position.y = coords.y; cubeContainer[0][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][4][1].position.y = coords.y; cubeContainer[0][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][4][0].material.color.r = coords.r; cubeContainer[0][4][0].material.color.g = coords.g; cubeContainer[0][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][5][0].position.y = coords.y; cubeContainer[0][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][5][1].position.y = coords.y; cubeContainer[0][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][5][0].material.color.r = coords.r; cubeContainer[0][5][0].material.color.g = coords.g; cubeContainer[0][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][6][0].position.y = coords.y; cubeContainer[0][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][6][1].position.y = coords.y; cubeContainer[0][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][6][0].material.color.r = coords.r; cubeContainer[0][6][0].material.color.g = coords.g; cubeContainer[0][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 0 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][7][0].position.y = coords.y; cubeContainer[0][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[0][7][1].position.y = coords.y; cubeContainer[0][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[0][7][0].material.color.r = coords.r; cubeContainer[0][7][0].material.color.g = coords.g; cubeContainer[0][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][0][0].position.y = coords.y; cubeContainer[1][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][0][1].position.y = coords.y; cubeContainer[1][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][0][0].material.color.r = coords.r; cubeContainer[1][0][0].material.color.g = coords.g; cubeContainer[1][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][1][0].position.y = coords.y; cubeContainer[1][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][1][1].position.y = coords.y; cubeContainer[1][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][1][0].material.color.r = coords.r; cubeContainer[1][1][0].material.color.g = coords.g; cubeContainer[1][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][2][0].position.y = coords.y; cubeContainer[1][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][2][1].position.y = coords.y; cubeContainer[1][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][2][0].material.color.r = coords.r; cubeContainer[1][2][0].material.color.g = coords.g; cubeContainer[1][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][3][0].position.y = coords.y; cubeContainer[1][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][3][1].position.y = coords.y; cubeContainer[1][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][3][0].material.color.r = coords.r; cubeContainer[1][3][0].material.color.g = coords.g; cubeContainer[1][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][4][0].position.y = coords.y; cubeContainer[1][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][4][1].position.y = coords.y; cubeContainer[1][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][4][0].material.color.r = coords.r; cubeContainer[1][4][0].material.color.g = coords.g; cubeContainer[1][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][5][0].position.y = coords.y; cubeContainer[1][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][5][1].position.y = coords.y; cubeContainer[1][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][5][0].material.color.r = coords.r; cubeContainer[1][5][0].material.color.g = coords.g; cubeContainer[1][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][6][0].position.y = coords.y; cubeContainer[1][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][6][1].position.y = coords.y; cubeContainer[1][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][6][0].material.color.r = coords.r; cubeContainer[1][6][0].material.color.g = coords.g; cubeContainer[1][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 1 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][7][0].position.y = coords.y; cubeContainer[1][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[1][7][1].position.y = coords.y; cubeContainer[1][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[1][7][0].material.color.r = coords.r; cubeContainer[1][7][0].material.color.g = coords.g; cubeContainer[1][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][0][0].position.y = coords.y; cubeContainer[2][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][0][1].position.y = coords.y; cubeContainer[2][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][0][0].material.color.r = coords.r; cubeContainer[2][0][0].material.color.g = coords.g; cubeContainer[2][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][1][0].position.y = coords.y; cubeContainer[2][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][1][1].position.y = coords.y; cubeContainer[2][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][1][0].material.color.r = coords.r; cubeContainer[2][1][0].material.color.g = coords.g; cubeContainer[2][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][2][0].position.y = coords.y; cubeContainer[2][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][2][1].position.y = coords.y; cubeContainer[2][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][2][0].material.color.r = coords.r; cubeContainer[2][2][0].material.color.g = coords.g; cubeContainer[2][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][3][0].position.y = coords.y; cubeContainer[2][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][3][1].position.y = coords.y; cubeContainer[2][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][3][0].material.color.r = coords.r; cubeContainer[2][3][0].material.color.g = coords.g; cubeContainer[2][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][4][0].position.y = coords.y; cubeContainer[2][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][4][1].position.y = coords.y; cubeContainer[2][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][4][0].material.color.r = coords.r; cubeContainer[2][4][0].material.color.g = coords.g; cubeContainer[2][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][5][0].position.y = coords.y; cubeContainer[2][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][5][1].position.y = coords.y; cubeContainer[2][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][5][0].material.color.r = coords.r; cubeContainer[2][5][0].material.color.g = coords.g; cubeContainer[2][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][6][0].position.y = coords.y; cubeContainer[2][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][6][1].position.y = coords.y; cubeContainer[2][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][6][0].material.color.r = coords.r; cubeContainer[2][6][0].material.color.g = coords.g; cubeContainer[2][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 2 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][7][0].position.y = coords.y; cubeContainer[2][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[2][7][1].position.y = coords.y; cubeContainer[2][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[2][7][0].material.color.r = coords.r; cubeContainer[2][7][0].material.color.g = coords.g; cubeContainer[2][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][0][0].position.y = coords.y; cubeContainer[3][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][0][1].position.y = coords.y; cubeContainer[3][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][0][0].material.color.r = coords.r; cubeContainer[3][0][0].material.color.g = coords.g; cubeContainer[3][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][1][0].position.y = coords.y; cubeContainer[3][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][1][1].position.y = coords.y; cubeContainer[3][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][1][0].material.color.r = coords.r; cubeContainer[3][1][0].material.color.g = coords.g; cubeContainer[3][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][2][0].position.y = coords.y; cubeContainer[3][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][2][1].position.y = coords.y; cubeContainer[3][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][2][0].material.color.r = coords.r; cubeContainer[3][2][0].material.color.g = coords.g; cubeContainer[3][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][3][0].position.y = coords.y; cubeContainer[3][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][3][1].position.y = coords.y; cubeContainer[3][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][3][0].material.color.r = coords.r; cubeContainer[3][3][0].material.color.g = coords.g; cubeContainer[3][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][4][0].position.y = coords.y; cubeContainer[3][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][4][1].position.y = coords.y; cubeContainer[3][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][4][0].material.color.r = coords.r; cubeContainer[3][4][0].material.color.g = coords.g; cubeContainer[3][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][5][0].position.y = coords.y; cubeContainer[3][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][5][1].position.y = coords.y; cubeContainer[3][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][5][0].material.color.r = coords.r; cubeContainer[3][5][0].material.color.g = coords.g; cubeContainer[3][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][6][0].position.y = coords.y; cubeContainer[3][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][6][1].position.y = coords.y; cubeContainer[3][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][6][0].material.color.r = coords.r; cubeContainer[3][6][0].material.color.g = coords.g; cubeContainer[3][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 3 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][7][0].position.y = coords.y; cubeContainer[3][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[3][7][1].position.y = coords.y; cubeContainer[3][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[3][7][0].material.color.r = coords.r; cubeContainer[3][7][0].material.color.g = coords.g; cubeContainer[3][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][0][0].position.y = coords.y; cubeContainer[4][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][0][1].position.y = coords.y; cubeContainer[4][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][0][0].material.color.r = coords.r; cubeContainer[4][0][0].material.color.g = coords.g; cubeContainer[4][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][1][0].position.y = coords.y; cubeContainer[4][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][1][1].position.y = coords.y; cubeContainer[4][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][1][0].material.color.r = coords.r; cubeContainer[4][1][0].material.color.g = coords.g; cubeContainer[4][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][2][0].position.y = coords.y; cubeContainer[4][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][2][1].position.y = coords.y; cubeContainer[4][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][2][0].material.color.r = coords.r; cubeContainer[4][2][0].material.color.g = coords.g; cubeContainer[4][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][3][0].position.y = coords.y; cubeContainer[4][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][3][1].position.y = coords.y; cubeContainer[4][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][3][0].material.color.r = coords.r; cubeContainer[4][3][0].material.color.g = coords.g; cubeContainer[4][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][4][0].position.y = coords.y; cubeContainer[4][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][4][1].position.y = coords.y; cubeContainer[4][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][4][0].material.color.r = coords.r; cubeContainer[4][4][0].material.color.g = coords.g; cubeContainer[4][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][5][0].position.y = coords.y; cubeContainer[4][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][5][1].position.y = coords.y; cubeContainer[4][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][5][0].material.color.r = coords.r; cubeContainer[4][5][0].material.color.g = coords.g; cubeContainer[4][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][6][0].position.y = coords.y; cubeContainer[4][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][6][1].position.y = coords.y; cubeContainer[4][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][6][0].material.color.r = coords.r; cubeContainer[4][6][0].material.color.g = coords.g; cubeContainer[4][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 4 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][7][0].position.y = coords.y; cubeContainer[4][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[4][7][1].position.y = coords.y; cubeContainer[4][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[4][7][0].material.color.r = coords.r; cubeContainer[4][7][0].material.color.g = coords.g; cubeContainer[4][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][0][0].position.y = coords.y; cubeContainer[5][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][0][1].position.y = coords.y; cubeContainer[5][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][0][0].material.color.r = coords.r; cubeContainer[5][0][0].material.color.g = coords.g; cubeContainer[5][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][1][0].position.y = coords.y; cubeContainer[5][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][1][1].position.y = coords.y; cubeContainer[5][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][1][0].material.color.r = coords.r; cubeContainer[5][1][0].material.color.g = coords.g; cubeContainer[5][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][2][0].position.y = coords.y; cubeContainer[5][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][2][1].position.y = coords.y; cubeContainer[5][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][2][0].material.color.r = coords.r; cubeContainer[5][2][0].material.color.g = coords.g; cubeContainer[5][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][3][0].position.y = coords.y; cubeContainer[5][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][3][1].position.y = coords.y; cubeContainer[5][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][3][0].material.color.r = coords.r; cubeContainer[5][3][0].material.color.g = coords.g; cubeContainer[5][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][4][0].position.y = coords.y; cubeContainer[5][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][4][1].position.y = coords.y; cubeContainer[5][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][4][0].material.color.r = coords.r; cubeContainer[5][4][0].material.color.g = coords.g; cubeContainer[5][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][5][0].position.y = coords.y; cubeContainer[5][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][5][1].position.y = coords.y; cubeContainer[5][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][5][0].material.color.r = coords.r; cubeContainer[5][5][0].material.color.g = coords.g; cubeContainer[5][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][6][0].position.y = coords.y; cubeContainer[5][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][6][1].position.y = coords.y; cubeContainer[5][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][6][0].material.color.r = coords.r; cubeContainer[5][6][0].material.color.g = coords.g; cubeContainer[5][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 5 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][7][0].position.y = coords.y; cubeContainer[5][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[5][7][1].position.y = coords.y; cubeContainer[5][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[5][7][0].material.color.r = coords.r; cubeContainer[5][7][0].material.color.g = coords.g; cubeContainer[5][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][0][0].position.y = coords.y; cubeContainer[6][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][0][1].position.y = coords.y; cubeContainer[6][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][0][0].material.color.r = coords.r; cubeContainer[6][0][0].material.color.g = coords.g; cubeContainer[6][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][1][0].position.y = coords.y; cubeContainer[6][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][1][1].position.y = coords.y; cubeContainer[6][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][1][0].material.color.r = coords.r; cubeContainer[6][1][0].material.color.g = coords.g; cubeContainer[6][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][2][0].position.y = coords.y; cubeContainer[6][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][2][1].position.y = coords.y; cubeContainer[6][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][2][0].material.color.r = coords.r; cubeContainer[6][2][0].material.color.g = coords.g; cubeContainer[6][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][3][0].position.y = coords.y; cubeContainer[6][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][3][1].position.y = coords.y; cubeContainer[6][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][3][0].material.color.r = coords.r; cubeContainer[6][3][0].material.color.g = coords.g; cubeContainer[6][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][4][0].position.y = coords.y; cubeContainer[6][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][4][1].position.y = coords.y; cubeContainer[6][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][4][0].material.color.r = coords.r; cubeContainer[6][4][0].material.color.g = coords.g; cubeContainer[6][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][5][0].position.y = coords.y; cubeContainer[6][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][5][1].position.y = coords.y; cubeContainer[6][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][5][0].material.color.r = coords.r; cubeContainer[6][5][0].material.color.g = coords.g; cubeContainer[6][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][6][0].position.y = coords.y; cubeContainer[6][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][6][1].position.y = coords.y; cubeContainer[6][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][6][0].material.color.r = coords.r; cubeContainer[6][6][0].material.color.g = coords.g; cubeContainer[6][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 6 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][7][0].position.y = coords.y; cubeContainer[6][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[6][7][1].position.y = coords.y; cubeContainer[6][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[6][7][0].material.color.r = coords.r; cubeContainer[6][7][0].material.color.g = coords.g; cubeContainer[6][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 0) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][0][0].position.y = coords.y; cubeContainer[7][0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][0][1].position.y = coords.y; cubeContainer[7][0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][0][0].material.color.r = coords.r; cubeContainer[7][0][0].material.color.g = coords.g; cubeContainer[7][0][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 1) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][1][0].position.y = coords.y; cubeContainer[7][1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][1][1].position.y = coords.y; cubeContainer[7][1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][1][0].material.color.r = coords.r; cubeContainer[7][1][0].material.color.g = coords.g; cubeContainer[7][1][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 2) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][2][0].position.y = coords.y; cubeContainer[7][2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][2][1].position.y = coords.y; cubeContainer[7][2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][2][0].material.color.r = coords.r; cubeContainer[7][2][0].material.color.g = coords.g; cubeContainer[7][2][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 3) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][3][0].position.y = coords.y; cubeContainer[7][3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][3][1].position.y = coords.y; cubeContainer[7][3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][3][0].material.color.r = coords.r; cubeContainer[7][3][0].material.color.g = coords.g; cubeContainer[7][3][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 4) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][4][0].position.y = coords.y; cubeContainer[7][4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][4][1].position.y = coords.y; cubeContainer[7][4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][4][0].material.color.r = coords.r; cubeContainer[7][4][0].material.color.g = coords.g; cubeContainer[7][4][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 5) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][5][0].position.y = coords.y; cubeContainer[7][5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][5][1].position.y = coords.y; cubeContainer[7][5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][5][0].material.color.r = coords.r; cubeContainer[7][5][0].material.color.g = coords.g; cubeContainer[7][5][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 6) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][6][0].position.y = coords.y; cubeContainer[7][6][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][6][1].position.y = coords.y; cubeContainer[7][6][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][6][0].material.color.r = coords.r; cubeContainer[7][6][0].material.color.g = coords.g; cubeContainer[7][6][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 } else if (i == 7 && j == 7) {
                     var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][7][0].position.y = coords.y; cubeContainer[7][7][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween.start();
 
                     var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {cubeContainer[7][7][1].position.y = coords.y; cubeContainer[7][7][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
                     tween1.start();
+
+                    var tween2 = new TWEEN.Tween({r: currentColor, g: currentColor, b: currentColor}).to({r: nextColor, g: nextColor, b: nextColor}, 1000).onUpdate((coords) => {cubeContainer[7][7][0].material.color.r = coords.r; cubeContainer[7][7][0].material.color.g = coords.g; cubeContainer[7][7][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                    tween2.start();
                 }
                 
+                cubeContainer[i][j][0].userData.color = cubeContainer[i][j][0].userData.colorChange;
                 // if (compositionContainer[i][0].userData.internalValue == compositionContainerValueMax) {
                 //     var color = new THREE.Color(1, 1, 1);
 
@@ -1748,93 +2087,95 @@ function onDocumentMouseDown(event) {
 
                         break;
                     } else if (intersects[i].object.name.length == 2) {
-                        if (isCubePressed) {
-                            cubePressed.material.color.set(cubePressed.userData.color);
+                        if (cubePressed == undefined || intersects[i].object.name != cubePressed.name) {
+                            if (isCubePressed) {
+                                cubePressed.material.color.r = cubePressed.userData.color;
+                                cubePressed.material.color.g = cubePressed.userData.color;
+                                cubePressed.material.color.b = cubePressed.userData.color;
 
-                            for (var k = 0; k < 6; k++) {
-                                if (compositionContainer[k][0].userData.internalValue == compositionContainerValueMax) {
-                                    var tween = new TWEEN.Tween({r: 1, g: 0.7216, b: 0}).to({r: 1, g: 1, b: 1}, 1000).onUpdate((coords) => {compositionContainer[k][0].material.color.r = coords.r; compositionContainer[k][0].material.color.g = coords.g; compositionContainer[k][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                                for (var k = 0; k < 6; k++) {
+                                    if (compositionContainer[k][0].userData.internalValue == compositionContainerValueMax) {
+                                        var tween = new TWEEN.Tween({r: 1, g: 0.7216, b: 0}).to({r: 1, g: 1, b: 1}, 1000).onUpdate((coords) => {compositionContainer[k][0].material.color.r = coords.r; compositionContainer[k][0].material.color.g = coords.g; compositionContainer[k][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
+                                        tween.start();
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            cubePressed = intersects[i].object;
+                            isCubePressed = true;
+                            intersects[i].object.material.color.set(0xffb700);
+
+                            compositionContainerValue = compositionDictionary[activeDataTypeNum][intersects[i].object.name];
+                            compositionContainerValueMax = compositionContainerValue.reduce((a, b) => Math.max(a, b), -Infinity);
+
+                            for (var i = 0; i < 6; i++) {
+                                compositionContainer[i][0].userData.internalValue = compositionContainerValue[i];
+
+                                var currentPosY;
+                                var currentScaleY = compositionContainer[i][0].scale.y;
+                                var newPosY;
+                                var newScaleY = compositionContainerValue[i] * 0.1;
+
+                                if (newScaleY <= 0) {
+                                    newScaleY = 0.01;
+                                }
+
+                                currentPosY = compositionContainer[i][0].geometry.parameters.height * compositionContainer[i][0].scale.y / 2;
+                                newPosY = (2 * compositionContainerValue[i] - compositionContainer[i][0].geometry.parameters.height * compositionContainerValue[i]) / 2 * 0.1;
+
+                                if (newPosY <= 0) {
+                                    newPosY = 0.01;
+                                }
+
+                                if (i == 0) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[0][0].position.y = coords.y; compositionContainer[0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[0][1].position.y = coords.y; compositionContainer[0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                } else if (i == 1) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[1][0].position.y = coords.y; compositionContainer[1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[1][1].position.y = coords.y; compositionContainer[1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                } else if (i == 2) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[2][0].position.y = coords.y; compositionContainer[2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[2][1].position.y = coords.y; compositionContainer[2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                } else if (i == 3) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[3][0].position.y = coords.y; compositionContainer[3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[3][1].position.y = coords.y; compositionContainer[3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                } else if (i == 4) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[4][0].position.y = coords.y; compositionContainer[4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[4][1].position.y = coords.y; compositionContainer[4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                } else if (i == 5) {
+                                    var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[5][0].position.y = coords.y; compositionContainer[5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween.start();
+
+                                    var tween1 = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[5][1].position.y = coords.y; compositionContainer[5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
+                                    tween1.start();
+                                }
+                                
+                            }
+
+                            for (var kx = 0; kx < 6; kx++) {
+                                if (compositionContainer[kx][0].userData.internalValue == compositionContainerValueMax) {
+                                    var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {compositionContainer[kx][0].material.color.r = coords.r; compositionContainer[kx][0].material.color.g = coords.g; compositionContainer[kx][0].material.color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut).delay(1000);
                                     tween.start();
                                     break;
                                 }
                             }
                         }
-                        
-                        cubePressed = intersects[i].object;
-                        isCubePressed = true;
-                        intersects[i].object.material.color.set(0xffb700);
-
-                        compositionContainerValue = compositionDictionary[intersects[i].object.name];
-                        compositionContainerValueMax = compositionContainerValue.reduce((a, b) => Math.max(a, b), -Infinity);
-
-                        for (var i = 0; i < 6; i++) {
-                            compositionContainer[i][0].userData.internalValue = compositionContainerValue[i];
-
-                            for (var j = 0; j < 2; j++) {
-                                var currentPosY;
-                                var currentScaleY = compositionContainer[i][j].scale.y;
-                                var newPosY;
-                                var newScaleY = compositionContainerValue[i] * 0.1;
-
-                                if (j == 0) {
-                                    currentPosY = compositionContainer[i][j].geometry.parameters.height * compositionContainer[i][j].scale.y / 2;
-                                    newPosY = (2 * compositionContainerValue[i] - compositionContainer[i][j].geometry.parameters.height * compositionContainerValue[i]) / 2 * 0.1;
-
-                                    if (i == 0) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[0][0].position.y = coords.y; compositionContainer[0][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 1) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[1][0].position.y = coords.y; compositionContainer[1][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 2) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[2][0].position.y = coords.y; compositionContainer[2][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 3) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[3][0].position.y = coords.y; compositionContainer[3][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 4) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[4][0].position.y = coords.y; compositionContainer[4][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 5) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[5][0].position.y = coords.y; compositionContainer[5][0].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    }
-
-                                    if (compositionContainer[i][0].userData.internalValue == compositionContainerValueMax) {
-                                        var color = new THREE.Color(1, 1, 1);
-
-                                        compositionContainer[i][0].material.color = color;
-
-                                        var tween = new TWEEN.Tween({r: 1, g: 1, b: 1}).to({r: 1, g: 0.7216, b: 0}, 1000).onUpdate((coords) => {color.r = coords.r; color.g = coords.g; color.b = coords.b}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    }
-                                } else if (j == 1) {
-                                    currentPosY = compositionContainer[i][j].geometry.parameters.geometry.parameters.height * compositionContainer[i][j].scale.y / 2;
-                                    newPosY = (2 * compositionContainerValue[i] - compositionContainer[i][j].geometry.parameters.geometry.parameters.height * compositionContainerValue[i]) / 2 * 0.1;
-
-                                    if (i == 0) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[0][1].position.y = coords.y; compositionContainer[0][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 1) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[1][1].position.y = coords.y; compositionContainer[1][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 2) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[2][1].position.y = coords.y; compositionContainer[2][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 3) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[3][1].position.y = coords.y; compositionContainer[3][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 4) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[4][1].position.y = coords.y; compositionContainer[4][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    } else if (i == 5) {
-                                        var tween = new TWEEN.Tween({y: currentPosY, yScale: currentScaleY}).to({y: newPosY, yScale: newScaleY}, 1000).onUpdate((coords) => {compositionContainer[5][1].position.y = coords.y; compositionContainer[5][1].scale.y = coords.yScale}).easing(TWEEN.Easing.Cubic.InOut);
-                                        tween.start();
-                                    }
-                                } 
-                            }
-                        }
-                        
                         break;
                     }
                 } 
