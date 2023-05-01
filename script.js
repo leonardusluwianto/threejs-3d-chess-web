@@ -2695,9 +2695,9 @@ function onDocumentMouseDown(event) {
             for (var i = 0; i < intersects.length; i++) {
                 if (intersects[i].object.isMesh === true && intersects[i].object.name.length > 0 && intersects[i].object.material.opacity > 0) {
                     if (intersects[i].object.name == "Annotation") {
-                        var currentImgSrc = document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.previousElementSibling.src;
-                        document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.previousElementSibling.src = "#";                        
-                        document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.previousElementSibling.src = currentImgSrc;
+                        var currentImgSrc = document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.src;
+                        document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.src = "#";                        
+                        document.getElementById(intersects[i].object.userData.Annotation_type).firstElementChild.lastElementChild.src = currentImgSrc;
 
                         if (activeSideAnnotation == undefined) {
                             document.getElementById(intersects[i].object.userData.Annotation_type).style.right = "0";                        
